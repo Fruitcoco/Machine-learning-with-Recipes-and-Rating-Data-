@@ -42,7 +42,10 @@ Second, the number of steps shows how complicated each recieps is. We reckoned t
 Year of the reciepes submission date is an ordinal feature. Therefore, we used OneHotEncoder for its feature engineering. The number of steps each reciepes would need is a quantative feature and we left it as is. With this additional two features, we were able to update our pipeline. 
 
 #### Final Model selection and Hyperparameters 
-For computational efficiency and identifying the most related features with the classification, we kept the DecisionTreeClassifier from our baseline model. Our models utilizes DecisionTreeClassifier with the followng four features: calories, recipe names, year of recieps submission date, and the steps for each recipes. By performing GridSearchCV from sklearn,model, we get the best performing hyperparameters: criterion='gini',max_depth=10,min_samples_split=6. 
+After comparing the performance accuracy from RandomForestClassifier and DecisionTreeClassifier, we noticed that there are no significant differences. Therefore, in order to optimize computational efficiency and identify the most related features with the classification, we kept the DecisionTreeClassifier from our baseline model. Our models utilizes DecisionTreeClassifier with the followng four features: calories, recipe names, year of recieps submission date, and the steps for each recipes. By performing GridSearchCV from sklearn,model, we get the best performing hyperparameters: criterion='gini', max_depth=10, min_samples_split=6. 
+
+We chose these hyperparameters to tune for the following reasons. Max_depth determines the overall-fit of our model. We want to make sure it is not too large to overfit the data. We also need to make sure it will not be too shallow. For min_samples_split, we also want to tune it so that we can find an apporiate number that would not cause overfit or underfit of the training data. This can help us fit the optimal number of samples for splitting internal nodes.
+We also tuned criterion becuase it specifies what the model would use to measure the quality of a split. Tuning this can help us find the optimal metric for splitting nodes based on the data chacracteristics.
 
 #### Final model performance
 Our final model has a better performance comparing to our baseline model. After testing the accuracy rate by OneVsRestClassifier, we can see that our accuracy score is almost 0.75. Which is better than what we saw in baseline model (around 0.6). 
@@ -50,8 +53,6 @@ Our final model has a better performance comparing to our baseline model. After 
 
 
 Below is a confusion matrix that describes our final model's performance.
-
-
 
 ### Fairness Analysis
 Our targed variable for the fairness analysis is the 'year' column. We noitced the collected year is ranging from 2008-2018. We divided the year into Group X which stands for the recipes that were submitted between year 2008-2013, and Group Y which stands for the recipes that were submitted between year 2014-2018. The evaluation matric is the accuracy matrix. 
@@ -61,9 +62,9 @@ We ran a permutation test to investigate whether there is a significant differen
 
 ##### Alternative Hypothesis: The classifier's accuracy is higher for before 2013 group.
 
-#### Test statistic: Absolute Difference in accuracy (before 2013-after 2013)
+##### Test statistic: Difference in accuracy (before 2013-after 2013)
 
-#### Significance level: 0.05
+##### Significance level: 0.05
 
 #### p-value and conclusion
 Our resulted p-value is 0.23. It is larger than 0.05 significance level so we failed to reject the null hypothesis. That is to say, it seems like the difference in accuracy across the two groups is not statistically significant. Our classifier is likely to achieve a accuracy parity between two time periods. 
@@ -71,14 +72,6 @@ Our resulted p-value is 0.23. It is larger than 0.05 significance level so we fa
 
 Below is the visulization of the our permutation test for fairness.
 
+<iframe src="assets/fairness_permutation.html" width=800 height=600 frameBorder=0></iframe>
 
-
-
-
-
-
-
-
-
-
-
+ 
